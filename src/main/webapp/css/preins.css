@@ -1,0 +1,234 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 10 jul. 2025, 01:23:40
+    Author     : c-can
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+}
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F1F4FD;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+img {
+    max-width: 100%;
+}
+.container, .container2, .container3, .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+.logo {
+    color: #000d83;
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: 800;
+}
+.menu .navbar ul {
+    display: flex;
+}
+.menu .navbar ul li a {
+    font-size: 18px;
+    padding: 0 20px;
+    color: #000d83;
+    display: block;
+    font-weight: 600;
+    text-decoration: none;
+}
+.menu .navbar ul li a:hover {
+    color: #3ec4ff;
+}
+#menu {
+    display: none;
+}
+.menu-icono {
+    width: 25px;
+}
+.menu label {
+    cursor: pointer;
+    display: none;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    padding: 80px;
+    width: 720px;
+    text-align: center;
+}
+p {
+    color: #000d83;
+}
+.preins-info {
+    padding: 80px 10px 100px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+input {
+    padding: 10px;
+    border-radius: 22px;
+    background-color: transparent;
+    border: 2px solid;
+    margin-bottom: 15px;
+    color: #000000;
+    font-size: 16px;
+    width: 620px;
+}
+select {
+    padding: 10px;
+    border-radius: 22px;
+    background-color: transparent;
+    margin-bottom: 15px;
+    width: 620px;
+}
+.btn {
+    padding: 10px;
+    border-radius: 22px;
+    border: 2px;
+    background-color: #0d0541;
+    cursor: pointer;
+}
+.btn:hover {
+    background-color: #1d145b;
+}
+.container-img {
+    flex-basis: 50%;
+    display: flex;
+    justify-content: center;
+}
+.container-img img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    width: 600px;
+    height: 800px;
+    border-radius: 25px;
+}
+.container-txt {
+    flex-basis: 50%;
+}
+button {
+    background: #fbca1f;
+    font-family: inherit;
+    padding: 0.6em 1.3em;
+    font-weight: 900;
+    font-size: 18px;
+    border: 3px solid black;
+    border-radius: 0.4em;
+    box-shadow: 0.1em 0.1em;
+    cursor: pointer;
+}
+button:hover {
+    transform: translate(-0.05em, -0.05em);
+    box-shadow: 0.15em 0.15em;
+}
+button:active {
+    transform: translate(0.05em, 0.05em);
+    box-shadow: 0.05em 0.05em;
+}
+.pie-pagina {
+    width: 100%;
+    background-color: #0d0541;
+}
+.pie-pagina .grupo-1 {
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 50px;
+    padding: 40px 0px;
+}
+.pie-pagina .grupo-1 .box figure {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pie-pagina .grupo-1 .box figure img {
+    width: 200px;
+}
+.pie-pagina .grupo-1 .box h2 {
+    color: #fff;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+.pie-pagina .grupo-1 .box p {
+    color: #efefef;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+.pie-pagina .grupo-1 .red-social a {
+    display: inline-block;
+    text-decoration: none;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: #fff;
+    margin-right: 10px;
+    background-color: #0d2033;
+    text-align: center;
+    transition: all 300ms ease;
+}
+.pie-pagina .grupo-1 .red-social a:hover {
+    color: aqua;
+}
+.pie-pagina .grupo-2 {
+    background-color: #0a1a2a;
+    padding: 15px 10px;
+    text-align: center;
+    color: #fff;
+}
+
+.menu .navbar ul li a.activo {
+    color: #3ec4ff;
+    border-bottom: 3px solid #3ec4ff;
+    padding-bottom: 5px;
+}
+
+
+.menu .navbar ul li a {
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 5px;
+}
+
+.custom-select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    border: 1px solid #000d83;      /* si quieres mantener un borde visible */
+    font-size: 18px;
+    font-weight: 600;
+    color: #000d83;
+    padding: 10px 30px 10px 20px;
+    border-radius: 0;               /* elimina el redondeo */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    outline: none;
+    min-width: 140px;
+
+    /* CENTRAMOS EL TEXTO SELECCIONADO */
+    text-align: center;
+    /* para navegadores como Firefox que usan text-align-last para el texto final */
+    text-align-last: center;
+}

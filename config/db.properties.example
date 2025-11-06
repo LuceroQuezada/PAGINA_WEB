@@ -1,0 +1,8 @@
+# Archivo de ejemplo de conexión a la base de datos
+# Copiar y renombrar este archivo como "db.properties"
+# y completar los datos reales antes de ejecutar la aplicación.
+
+db.url=jdbc:mysql://localhost:3306/NOMBRE_DE_TU_BD?useSSL=false&serverTimezone=UTC
+db.user=USUARIO
+db.password=CONTRASENA
+

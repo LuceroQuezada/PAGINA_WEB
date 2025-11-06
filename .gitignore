@@ -1,0 +1,30 @@
+# NetBeans
+/nbproject/private/
+/build/
+/dist/
+/nbbuild/
+/nbsupport/
+
+# Maven
+/target/
+
+# IDEs
+/.idea/
+/.vscode/
+/*.iml
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos sensibles o locales
+/config/*.properties
+*.env
+*.log
+*.war
+*.jar
+
+# Dependencias externas
+/lib/
+/libs/
+

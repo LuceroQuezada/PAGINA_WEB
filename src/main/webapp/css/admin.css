@@ -1,0 +1,81 @@
+     body {
+                background: #f5f6fa;
+                margin: 0;
+                padding: 0;
+            }
+
+            .sidebar {
+                background: linear-gradient(180deg, #6a11cb 0%, #2575fc 100%);
+                color: white;
+                min-width: 220px;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem 1rem;
+            }
+
+            .sidebar .nav-link {
+                color: white;
+                transition: 0.2s;
+            }
+
+            .sidebar .nav-link:hover,
+            .sidebar .nav-link.sidebar-active {
+                background-color: rgba(255, 255, 255, 0.15);
+                border-radius: 5px;
+            }
+
+            .sidebar i {
+                width: 20px;
+            }
+
+            .main-content {
+                padding: 3rem 2rem;
+                width: 100%;
+            }
+
+            .card {
+                border: none;
+                border-radius: 15px;
+                height: 230px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                transition: transform 0.2s, box-shadow 0.2s;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            }
+
+            .card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            }
+
+            .card-title {
+                font-size: 1.6rem;
+                font-weight: bold;
+                margin-bottom: 0.5rem;
+            }
+
+            .card-text {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+            }
+
+            .btn-light {
+                font-weight: bold;
+                padding: 0.5rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            .dashboard-title {
+                font-size: 2.2rem;
+                font-weight: bold;
+            }
+
+            .dashboard-subtitle {
+                font-size: 1.2rem;
+                color: #555;
+            }

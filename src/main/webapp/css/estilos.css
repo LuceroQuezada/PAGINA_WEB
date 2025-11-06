@@ -1,0 +1,274 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  list-style: none;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #F1F4FD;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* —— NAVBAR TRANSPARENTE —— */
+.navbar {
+  background: transparent !important;
+  box-shadow: none;
+}
+
+/* Oculta logo/Cabecera anterior */
+.logo,
+.navbar-brand {
+  display: none;
+}
+
+/* Items centrados */
+.navbar-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-item {
+  margin: 0 1rem;
+}
+
+/* Links */
+.nav-link {
+  font-size: 18px;
+  font-weight: 600;
+  color: #000d83;
+  padding-bottom: 0.25rem;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link.activo {
+  color: #3ec4ff;
+  border-bottom-color: #3ec4ff;
+}
+
+/* Select “Inscripción” */
+select.form-select-sm {
+  background: transparent;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #000d83;
+  padding: 0.25rem 1.5rem 0.25rem 0;
+  cursor: pointer;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #000d83 50%),
+    linear-gradient(135deg, #000d83 50%, transparent 50%);
+  background-position:
+    calc(100% - 15px) center,
+    calc(100% - 10px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+select.form-select-sm:focus {
+  outline: none;
+}
+
+select.form-select-sm:hover {
+  color: #3ec4ff;
+}
+.header-content {
+    display: flex;
+    padding: 80px 0 0 0;
+}
+.header-txt {
+    flex-basis: 50%;
+    padding-right: 30px;
+}
+.header-txt span {
+    font-size: 18px;
+    text-transform: capitalize;
+    color: #ff5d5d;
+    font-weight: 600;
+    margin-bottom: 15px;
+    display: block;
+}
+.header-txt h1 {
+    font-size: 70px;
+    line-height: 1;
+    color: #000d83;
+    margin-bottom: 15px;
+}
+p {
+    font-size: 18px;
+    color: #2c39aa;
+    margin-bottom: 50px;
+}
+.btn-1 {
+    display: inline-block;
+    padding: 14px 25px;
+    background-color: #000d83;
+    color: #ffffff;
+    text-transform: uppercase;
+    font-size: 15px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(33, 40, 105, 0.2);
+}
+.header-img {
+    flex-basis: 50%;
+}
+.brands {
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 15px 20px rgba(33, 40, 105, 0.2);
+}
+.brands-1 {
+    flex-basis: calc(33% - 25px);
+}
+.brands-1 p {
+    font-size: 25px;
+    line-height: 1;
+    font-weight: 600;
+    color: #000d83;
+    margin: 0;
+}
+.brands-1 img {
+    width: 150px;
+}
+.centrame {
+    padding: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.centrame .img {
+    max-width: 70%;
+    height: auto;
+    border: 10px solid white;
+    border-radius: 10px;
+    box-shadow: 0 15px 20px rgba(33, 40, 105, 0.2);
+}
+.services {
+    padding: 50px 0;
+    text-align: center;
+}
+h2 {
+    font: 40px;
+    line-height: 1;
+    color: #000d83;
+    margin-bottom: 20px;
+}
+.services-content {
+    margin-top: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.services-1 {
+    flex-basis: calc(33% - 30px);
+    background-color: #fbfcfe;
+    padding: 40px;
+    box-shadow: 0 0 10px rgba(33, 40, 105, 0.2);
+    border-radius: 25px;
+    color: #000d83;
+}
+.services-1:hover {
+    background-color: #000d83;
+    color: #ffffff;
+    cursor: pointer;
+}
+.services-1:hover p {
+    color: #ffffff;
+}
+.services-1 img {
+    width: 35px;
+    height: 35px;
+    margin-bottom: 10px;
+}
+.services-1 h3 {
+    font-size: 20px;
+    line-height: 1.2;
+}
+.pie-pagina {
+    width: 100%;
+    height: 50%;
+    background-color: #0d0541;
+}
+.pie-pagina .grupo-1 {
+    width: 80%;
+    max-width: 1200px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 50px;
+    padding: 40px 0px;
+}
+.pie-pagina .grupo-1 .box figure {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.pie-pagina .grupo-1 .box figure {
+    width: 200px;
+}
+.pie-pagina .grupo-1 .box h2 {
+    color: #fff;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+.pie-pagina .grupo-1 .box p {
+    color: #efefef;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+.pie-pagina .grupo-1 .red-social a {
+    display: inline-block;
+    text-decoration: none;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    color: #fff;
+    margin-right: 10px;
+    background-color: #0d2033;
+    text-align: center;
+    transition: all 300ms ease;
+}
+.pie-pagina .grupo-1 .red-social a:hover {
+    color: aqua;
+}
+.pie-pagina .grupo-2 {
+    background-color: #0a1a2a;
+    padding: 15px 10px;
+    text-align: center;
+    color: #fff;
+    padding: 10px 10px;
+}
+
+
+.menu .navbar ul li a.activo {
+    color: #3ec4ff;
+    border-bottom: 3px solid #3ec4ff;
+    padding-bottom: 5px;
+}
+
+
+.menu .navbar ul li a {
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 5px;
+}
+
+
