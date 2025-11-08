@@ -1,0 +1,29 @@
+<header class="dashboard-topbar">
+    <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-icon d-lg-none" id="sidebarToggle" aria-label="Abrir menu">
+            <i class="bi bi-list"></i>
+        </button>
+        <div>
+            <p class="text-muted mb-0 small">Miercoles, 5 de noviembre de 2025</p>
+            <h6 class="mb-0">Bienvenido de vuelta, <span class="text-uppercase"><%= nombreEstudiante %></span></h6>
+        </div>
+    </div>
+    <div class="topbar-actions">
+        <div class="position-relative">
+            <button class="btn btn-icon" aria-label="Notificaciones">
+                <i class="bi bi-bell"></i>
+            </button>
+            <span class="notification-dot"></span>
+        </div>
+        <div class="user-pill">
+            <div class="user-avatar">
+                <%= inicialEstudiante %>
+            </div>
+            <div>
+                <p class="mb-0 fw-semibold text-uppercase"><%= nombreEstudiante %></p>
+                <small class="text-muted">Estudiante</small>
+            </div>
+            <i class="bi bi-chevron-down text-muted"></i>
+        </div>
+    </div>
+</header>
