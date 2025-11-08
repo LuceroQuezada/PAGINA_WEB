@@ -1,4 +1,4 @@
-<%@ page import="modelo.Usuario" %>
+ï»¿<%@ page import="modelo.Usuario" %>
 <%@ page session="true" %>
 <%@ page import="DAO.UsuarioDAO" %>
 <%@ include file="verificarEstudiante.jsp" %>
@@ -8,6 +8,11 @@
         response.sendRedirect("../login.jsp");
         return;
     }
+    String nombreEstudiante = (usuario != null && usuario.getNombre() != null && !usuario.getNombre().isEmpty())
+            ? usuario.getNombre().toUpperCase()
+            : "ESTUDIANTE";
+    String inicialEstudiante = nombreEstudiante.substring(0, 1);
+    request.setAttribute("sidebarActive", "dashboard");
 %>
 <!DOCTYPE html>
 <html>
@@ -15,188 +20,354 @@
         <meta charset="UTF-8">
         <title>Panel Estudiante</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css">
-        <script src="https://kit.fontawesome.com/f054896dbd.js" crossorigin="anonymous"></script>
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/estudiante/css/sidebar.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/estudiante/css/topbar.css">
         <style>
-            body {
-                background: #f5f6fa;
-                margin: 0;
-                padding: 0;
+            :root {
+                --color-bg: #F3F4F6;
+                --color-surface: #FFFFFF;
+                --color-border: #E5E7EB;
+                --color-muted: #6B7280;
+                --color-muted-2: #6A7282;
+                --color-accent: #00C2CB;
+                --color-accent-2: #00A63E;
+                --color-danger: #E7000B;
+                --color-success: #10B981;
+                --color-sidebar-top: #1E1B4B;
+                --color-sidebar-bottom: #2F0059;
+                --color-sidebar-text: #FFFFFFB2;
+                --color-attendance: #F3F4F61A;
             }
 
-            .sidebar {
-                background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                min-width: 220px;
+            body {
+                font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+                background: var(--color-bg);
+                color: #1A1A1A;
+                margin: 0;
+            }
+
+            .dashboard-layout {
                 min-height: 100vh;
+                background: var(--color-bg);
+            }
+
+            .content-wrapper {
+                flex: 1;
                 display: flex;
                 flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 2rem 1rem;
+                background: var(--color-bg);
             }
 
-            .sidebar .nav-link {
-                color: white;
-                transition: 0.2s;
+            .dashboard-main {
+                flex: 1;
+                padding: 2rem;
             }
 
-            .sidebar .nav-link:hover,
-            .sidebar .nav-link.sidebar-active {
-                background-color: rgba(255, 255, 255, 0.15);
-                border-radius: 5px;
+            .welcome-card {
+                background: var(--color-surface);
+                border-radius: 24px;
+                padding: 2rem;
+                border: 1px solid var(--color-border);
             }
 
-            .sidebar i {
-                width: 20px;
+            .welcome-card h1 {
+                font-size: 1.75rem;
+                font-weight: 600;
             }
 
-            .main-content {
-                padding: 3rem 2rem;
-                width: 100%;
+            .section-card {
+                background: var(--color-surface);
+                border-radius: 20px;
+                border: 1px solid var(--color-border);
+                padding: 1.5rem;
             }
 
-            .card {
-                border: none;
-                border-radius: 15px;
-                height: 230px;
+            .section-card + .section-card {
+                margin-top: 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+                color: #1A1A1A;
+            }
+
+            .class-card {
+                border: 1px solid var(--color-border);
+                border-radius: 16px;
+                padding: 1.25rem;
                 display: flex;
-                justify-content: center;
+                flex-direction: column;
+                gap: 0.5rem;
+                position: relative;
+            }
+
+            .class-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                width: 6px;
+                background: linear-gradient(180deg, var(--color-accent), var(--color-accent-2));
+                border-radius: 16px 0 0 16px;
+            }
+
+            .class-card-content {
+                margin-left: 1rem;
+            }
+
+            .class-meta {
+                color: var(--color-muted);
+                font-size: 0.95rem;
+            }
+
+            .badge-section {
+                align-self: flex-start;
+                background: #EAFBF3;
+                color: var(--color-accent-2);
+                border-radius: 999px;
+                padding: 0.15rem 0.75rem;
+                font-size: 0.85rem;
+                font-weight: 600;
+            }
+
+            .schedule {
+                display: flex;
+                gap: 1.5rem;
+                font-size: 0.9rem;
+                color: var(--color-muted-2);
+            }
+
+            .attendance-list {
+                background: var(--color-attendance);
+                border-radius: 16px;
+                padding: 1rem 1.25rem;
+            }
+
+            .attendance-item {
+                display: flex;
+                justify-content: space-between;
                 align-items: center;
-                text-align: center;
-                transition: transform 0.2s, box-shadow 0.2s;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                padding: 0.4rem 0;
+                border-bottom: 1px dashed #D1D5DC;
+                font-size: 0.95rem;
             }
 
-            .card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+            .attendance-item:last-child {
+                border-bottom: none;
             }
 
-            .card-title {
-                font-size: 1.6rem;
-                font-weight: bold;
+            .attendance-status {
+                font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
+            }
+
+            .status-success {
+                color: var(--color-success);
+            }
+
+            .status-warning {
+                color: var(--color-muted);
+            }
+
+            .status-danger {
+                color: var(--color-danger);
+            }
+
+            .announcement-card {
+                border-radius: 18px;
+                overflow: hidden;
+                border: 1px solid var(--color-border);
+                margin-bottom: 1.25rem;
+            }
+
+            .announcement-card img {
+                width: 100%;
+                height: 140px;
+                object-fit: cover;
+            }
+
+            .announcement-card .card-body {
+                padding: 1rem 1.25rem 1.5rem;
+            }
+
+            .announcement-card h6 {
+                font-weight: 600;
+            }
+
+            .announcement-card p {
+                color: var(--color-muted);
                 margin-bottom: 0.5rem;
             }
 
-            .card-text {
-                font-size: 1.2rem;
-                margin-bottom: 1rem;
+            .announcement-card a {
+                text-decoration: none;
+                font-weight: 600;
+                color: var(--color-accent);
+                display: inline-flex;
+                align-items: center;
+                gap: 0.3rem;
             }
 
-            .btn-light {
-                font-weight: bold;
-                padding: 0.5rem 1.5rem;
-                border-radius: 20px;
-            }
-
-            .dashboard-title {
-                font-size: 2.2rem;
-                font-weight: bold;
-            }
-
-            .dashboard-subtitle {
-                font-size: 1.2rem;
-                color: #555;
+            @media (max-width: 991.98px) {
+                .dashboard-main {
+                    padding: 1.5rem 1rem 2rem;
+                }
             }
         </style>
     </head>
     <body>
-        <div class="d-flex">
-            <div class="sidebar">
-                <div class="text-center mb-4">
-                    <h4><i class="fas fa-user-graduate"></i> Panel Estudiante</h4>
-                    <p><strong><i class="fas fa-user"></i> Estudiante</strong></p>
-                </div>
-                <ul class="nav flex-column w-100 px-2">
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link sidebar-active"><i class="fas fa-home"></i> Dashboard</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link">
-                            <i class="fas fa-book"></i> Mis Cursos
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link"><i class="fas fa-calendar-alt"></i> Horario</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link"><i class="fas fa-chart-line"></i> Notas</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link"><i class="fas fa-tasks"></i> Mi asistencia</a>
-                    </li>
-
-                    <li class="nav-item mt-4">
-                       <a href="${pageContext.request.contextPath}/salir" class="btn btn-danger w-100">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="main-content">
-                <div class="text-center mb-4">
-                    <h2 class="dashboard-title">Bienvenido al Panel del Estudiante</h2>
-                    <p class="dashboard-subtitle">¿Qué deseas hacer hoy?</p>
-                </div>
-
-                <div class="row justify-content-center g-4">
-
-                    <div class="col-md-5">
-                        <div class="card text-white" style="background: linear-gradient(135deg, #667eea, #764ba2);">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h5 class="card-title"><i class="fas fa-book"></i> Mis Cursos</h5>
-                                <p class="card-text">Accede a todos tus cursos matriculados.</p>
-                                <a href="${pageContext.request.contextPath}/Estudiante/Cursos" class="btn btn-light">Ver Cursos</a>
+        <div class="dashboard-layout d-flex">
+            <%@ include file="includes/sidebar.jspf" %>
+            <div class="content-wrapper">
+                <%@ include file="includes/topbar.jspf" %>
+                <main class="dashboard-main">
+                    <div class="welcome-card mb-4">
+                        <p class="text-muted mb-1">Clases programadas</p>
+                        <h1>Organiza tu dia</h1>
+                        <p class="text-muted mb-0">Estas son las actividades destacadas de hoy.</p>
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-12 col-lg-8">
+                            <div class="section-card">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="section-title mb-0">Clases de hoy</h5>
+                                    <button class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <i class="bi bi-plus-lg me-1"></i>Agregar recordatorio
+                                    </button>
+                                </div>
+                                <div class="class-card mb-3">
+                                    <div class="class-card-content">
+                                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                            <div>
+                                                <h6 class="mb-1">Calculo Diferencial</h6>
+                                                <p class="class-meta mb-0">MAT-101 &middot; Hebert Perez</p>
+                                            </div>
+                                            <span class="badge-section">A-1</span>
+                                        </div>
+                                        <div class="schedule mt-3">
+                                            <span><i class="bi bi-clock me-1"></i>09:00 - 11:00</span>
+                                            <span><i class="bi bi-geo-alt me-1"></i>Sala 302</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="class-card">
+                                    <div class="class-card-content">
+                                        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                            <div>
+                                                <h6 class="mb-1">Fisica Mecanica</h6>
+                                                <p class="class-meta mb-0">FIS-101 &middot; Hebert Perez</p>
+                                            </div>
+                                            <span class="badge-section">A-1</span>
+                                        </div>
+                                        <div class="schedule mt-3">
+                                            <span><i class="bi bi-clock me-1"></i>11:30 - 13:30</span>
+                                            <span><i class="bi bi-geo-alt me-1"></i>Laboratorio 1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-card mt-4">
+                                <h5 class="section-title">Asistencia del dia</h5>
+                                <div class="attendance-list">
+                                    <div class="attendance-item">
+                                        <span>Lunes, 3 de noviembre</span>
+                                        <span class="attendance-status status-success">
+                                            <i class="bi bi-check-circle"></i> Asistio
+                                        </span>
+                                    </div>
+                                    <div class="attendance-item">
+                                        <span>Domingo, 2 de noviembre</span>
+                                        <span class="attendance-status status-success">
+                                            <i class="bi bi-check-circle"></i> Asistio
+                                        </span>
+                                    </div>
+                                    <div class="attendance-item">
+                                        <span>Sabado, 1 de noviembre</span>
+                                        <span class="attendance-status status-warning">
+                                            <i class="bi bi-dash-circle"></i> Sin registro
+                                        </span>
+                                    </div>
+                                    <div class="attendance-item">
+                                        <span>Viernes, 31 de octubre</span>
+                                        <span class="attendance-status status-success">
+                                            <i class="bi bi-check-circle"></i> Asistio
+                                        </span>
+                                    </div>
+                                    <div class="attendance-item">
+                                        <span>Jueves, 30 de octubre</span>
+                                        <span class="attendance-status status-danger">
+                                            <i class="bi bi-x-circle"></i> Falta
+                                        </span>
+                                    </div>
+                                    <div class="attendance-item">
+                                        <span>Miercoles, 29 de octubre</span>
+                                        <span class="attendance-status status-success">
+                                            <i class="bi bi-check-circle"></i> Asistio
+                                        </span>
+                                    </div>
+                                    <div class="attendance-item">
+                                        <span>Martes, 28 de octubre</span>
+                                        <span class="attendance-status status-success">
+                                            <i class="bi bi-check-circle"></i> Asistio
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <div class="section-card">
+                                <h5 class="section-title">Anuncios</h5>
+                                <div class="announcement-card shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=60" alt="Cursos de verano">
+                                    <div class="card-body">
+                                        <h6>&#161;Nuevos cursos de verano!</h6>
+                                        <p>Aprovecha el 30% de descuento en todos los cursos intensivos.</p>
+                                        <a href="#">
+                                            Explorar cursos <i class="bi bi-box-arrow-up-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="announcement-card shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?auto=format&fit=crop&w=600&q=60" alt="Certificaciones">
+                                    <div class="card-body">
+                                        <h6>Certificaciones profesionales</h6>
+                                        <p>Obten certificados reconocidos internacionalmente y destaca.</p>
+                                        <a href="#">
+                                            Mas informacion <i class="bi bi-arrow-up-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="announcement-card shadow-sm mb-0">
+                                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=60" alt="Descuentos">
+                                    <div class="card-body">
+                                        <h6>Descuentos estudiantes</h6>
+                                        <p>Presenta tu credencial y accede a beneficios exclusivos.</p>
+                                        <a href="#">
+                                            Saber mas <i class="bi bi-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-5">
-                        <div class="card text-white" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h5 class="card-title"><i class="fas fa-calendar-alt"></i> Mi Horario</h5>
-                                <p class="card-text">Consulta tu horario de clases semanal.</p>
-                                <a href="${pageContext.request.contextPath}/Estudiante/Horario" class="btn btn-light">Ver Horario</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-5">
-                        <div class="card text-white" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
-                            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h5 class="card-title"><i class="fas fa-chart-line"></i> Mis Notas</h5>
-                                <p class="card-text">Revisa tus calificaciones y progreso académico.</p>
-                                <!-- Botón para ver sus propias notas -->
-<a href="${pageContext.request.contextPath}/Estudiante/MisNotas" class="btn btn-light">Ver Notas</a>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-
-<!-- tarjeta de Asistencia -->
-<div class="col-md-5">
-  <div class="card text-white bg-info">
-    <div class="card-body text-center">
-      <h5 class="card-title"><i class="fas fa-calendar-check"></i> Mi Asistencia</h5>
-      <p class="card-text">Consulta tus registros de asistencia.</p>
-      <!-- Aquí apuntamos al Servlet EstudianteMisAsistenciaServlet -->
-     <a href="${pageContext.request.contextPath}/Estudiante/Asistencia"
-   class="btn btn-light">Ver Asistencias</a>
-
-    </div>
-  </div>
-</div>
-
-
-
-                </div>
+                </main>
             </div>
         </div>
-
         <script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script>
+            (function () {
+                var sidebar = document.getElementById('studentSidebar');
+                var toggle = document.getElementById('sidebarToggle');
+                if (toggle && sidebar) {
+                    toggle.addEventListener('click', function () {
+                        sidebar.classList.toggle('sidebar-open');
+                    });
+                }
+            })();
+        </script>
     </body>
 </html>

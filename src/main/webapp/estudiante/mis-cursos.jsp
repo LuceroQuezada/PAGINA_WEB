@@ -1,140 +1,204 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+﻿<%@ page import="modelo.Usuario" %>
+<%@ page session="true" %>
+<%@ page import="DAO.UsuarioDAO" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ include file="verificarEstudiante.jsp" %>
+<%
+    if ("true".equals(request.getParameter("logout"))) {
+        session.invalidate();
+        response.sendRedirect("../login.jsp");
+        return;
+    }
+    String nombreEstudiante = (usuario != null && usuario.getNombre() != null && !usuario.getNombre().isEmpty())
+            ? usuario.getNombre().toUpperCase()
+            : "ESTUDIANTE";
+    String inicialEstudiante = nombreEstudiante.substring(0, 1);
+    request.setAttribute("sidebarActive", "cursos");
+%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Mis Cursos</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-      <style>
-            body {
-                background: #f5f6fa;
-                margin: 0;
-                padding: 0;
-            }
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/estudiante/css/sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/estudiante/css/topbar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/estudiante/css/courses.css">
+    <style>
+        :root {
+            --color-bg: #F3F4F6;
+            --color-surface: #FFFFFF;
+            --color-border: #E5E7EB;
+            --color-muted: #6B7280;
+            --color-accent: #00C2CB;
+            --color-accent-2: #00A63E;
+            --color-sidebar-top: #1E1B4B;
+            --color-sidebar-bottom: #2F0059;
+            --color-sidebar-text: #FFFFFFB2;
+        }
 
-            .sidebar {
-                background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-                color: white;
-                min-width: 220px;
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 2rem 1rem;
-            }
+        body {
+            font-family: "Segoe UI", "Inter", system-ui, -apple-system, sans-serif;
+            background: var(--color-bg);
+            color: #1A1A1A;
+            margin: 0;
+        }
 
-            .sidebar .nav-link {
-                color: white;
-                transition: 0.2s;
-            }
+        .dashboard-layout {
+            min-height: 100vh;
+            background: var(--color-bg);
+        }
 
-            .sidebar .nav-link:hover,
-            .sidebar .nav-link.sidebar-active {
-                background-color: rgba(255, 255, 255, 0.15);
-                border-radius: 5px;
-            }
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg);
+        }
 
-            .sidebar i {
-                width: 20px;
-            }
+        .dashboard-main {
+            flex: 1;
+            padding: 2rem;
+        }
 
-            .main-content {
-                padding: 3rem 2rem;
-                width: 100%;
+        .section-card {
+            background: var(--color-surface);
+            border-radius: 20px;
+            border: 1px solid var(--color-border);
+            padding: 1.5rem;
+        }
+
+        @media (max-width: 991.98px) {
+            .dashboard-main {
+                padding: 1.5rem 1rem 2rem;
             }
-            </style>
+        }
+    </style>
 </head>
-<body class="bg-light">
-        <div class="d-flex">
-            <div class="sidebar">
-                <div class="text-center mb-4">
-                    <h4><i class="fas fa-user-graduate"></i> Panel Estudiante</h4>
-                    <p><strong><i class="fas fa-user"></i> Estudiante</strong></p>
-                </div>
-                <ul class="nav flex-column w-100 px-2">
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link sidebar-active"><i class="fas fa-home"></i> Dashboard</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link">
-                            <i class="fas fa-book"></i> Mis Cursos
-                        </a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link"><i class="fas fa-calendar-alt"></i> Horario</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link"><i class="fas fa-chart-line"></i> Notas</a>
-                    </li>
-                    <li class="nav-item mb-2">
-                        <a href="" class="nav-link"><i class="fas fa-tasks"></i> Mi asistencia</a>
-                    </li>
-
-                    <li class="nav-item mt-4">
-                       <a href="${pageContext.request.contextPath}/salir" class="btn btn-danger w-100">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-<div class="container py-4">
-
-    <h2 class="mb-4 text-primary">
-        <i class="fas fa-book-open"></i> Mis Cursos y Materiales
-    </h2>
-
-    <!-- Selección de Sección -->
-    <form method="get" action="${pageContext.request.contextPath}/Estudiante/Cursos" class="row g-2 mb-4">
-        <div class="col-md-8">
-            <select name="idSeccion" class="form-select" onchange="this.form.submit()">
-                <option value="">-- Selecciona un curso / sección --</option>
-                <c:forEach var="s" items="${secciones}">
-                    <option value="${s.id}" <c:if test="${s.id == selectedSeccion}">selected</c:if>>
-                        ${s.curso} | ${s.seccion} | ${s.profesor}
-                    </option>
-                </c:forEach>
-            </select>
-        </div>
-    </form>
-
-    <!-- Materiales del Curso -->
-    <c:if test="${not empty materiales}">
-        <div class="row">
-            <c:forEach var="m" items="${materiales}">
-                <div class="col-md-4">
-                    <div class="card shadow-sm mb-3">
-                        <div class="card-body">
-                            <i class="${m.icono} fa-2x mb-2"></i>
-                            <h5 class="card-title text-truncate" title="${m.titulo}">
-                                ${m.titulo}
-                            </h5>
-                            <p class="card-text small text-muted">${m.descripcion}</p>
-                            <a class="btn btn-sm btn-outline-primary"
-                               href="${pageContext.request.contextPath}/descargar?file=${m.archivo}">
-                                <i class="fas fa-download"></i> Descargar
-                            </a>
-                        </div>
+<body>
+<c:set var="courseCovers" value="${fn:split('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=900&q=60,https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=60,https://images.unsplash.com/photo-1509221963641-49e27c514d3c?auto=format&fit=crop&w=900&q=60', ',')}" />
+<c:set var="progressPattern" value="${fn:split('65,40,85', ',')}" />
+    <div class="dashboard-layout d-flex">
+        <%@ include file="includes/sidebar.jspf" %>
+        <div class="content-wrapper">
+            <%@ include file="includes/topbar.jspf" %>
+            <main class="dashboard-main courses-main">
+                <div class="courses-hero">
+                    <div>
+                        <p class="text-muted mb-1">Descubre y gestiona tus cursos</p>
+                        <h1 class="mb-0">Mis Cursos</h1>
                     </div>
                 </div>
-            </c:forEach>
-        </div>
-    </c:if>
 
-    <c:if test="${empty materiales and not empty selectedSeccion}">
-        <div class="alert alert-info">No hay materiales disponibles para esta sección.</div>
-    </c:if>
+                <c:choose>
+                    <c:when test="${not empty secciones}">
+                        <div class="row g-4 courses-grid">
+                            <c:forEach var="curso" items="${secciones}" varStatus="status">
+                                <c:set var="coverIndex" value="${status.index % fn:length(courseCovers)}" />
+                                <c:set var="progressIndex" value="${status.index % fn:length(progressPattern)}" />
+                                <c:set var="progressValue" value="${progressPattern[progressIndex]}" />
+                                <div class="col-12 col-md-6 col-xl-4">
+                                    <div class="course-card">
+                                        <div class="course-cover" style="background-image: url('${courseCovers[coverIndex]}');">
+                                            <div class="course-progress">
+                                                <span>${progressValue}</span>
+                                                <small>%</small>
+                                            </div>
+                                            <div class="course-progress-bar">
+                                                <span style="width: ${progressValue}%;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="course-body">
+                                            <h5 class="course-title">${curso.curso}</h5>
+                                            <p class="course-meta">
+                                                <i class="bi bi-clock-history"></i>
+                                                <span>
+                                                    Secci&oacute;n ${empty curso.seccion ? 'A' : curso.seccion}
+                                                    <c:if test="${not empty curso.grupo}"> - Grupo ${curso.grupo}</c:if>
+                                                </span>
+                                            </p>
+                                            <div class="course-instructor">
+                                                <div class="instructor-avatar">
+                                                    <i class="bi bi-person"></i>
+                                                </div>
+                                                <div>
+                                                    <small class="text-muted">Docente</small>
+                                                    <p class="mb-0">${empty curso.profesor ? 'Por asignar' : curso.profesor}</p>
+                                                </div>
+                                            </div>
+                                            <a class="btn btn-outline-primary w-100 mt-3" href="${pageContext.request.contextPath}/Estudiante/Cursos?idSeccion=${curso.id}">
+                                                Ver material
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </c:forEach>
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <div class="section-card text-center">
+                            <h5>A&uacute;n no tienes cursos asignados</h5>
+                            <p class="text-muted mb-0">Cuando te inscribas en una secci&oacute;n ver&aacute;s sus detalles aqu&iacute;.</p>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
 
-   <div class="col-12 text-center">
+                <c:if test="${not empty selectedSeccion}">
+                    <div class="section-card mt-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <p class="text-muted mb-1">Material seleccionado</p>
+                                <h5 class="mb-0">Recursos del curso</h5>
+                            </div>
+                            <a href="${pageContext.request.contextPath}/Estudiante/Cursos" class="btn btn-link text-decoration-none">
+                                Limpiar selecci&oacute;n
+                            </a>
+                        </div>
+                        <c:choose>
+                            <c:when test="${not empty materiales}">
+                                <div class="material-grid row g-3">
+                                    <c:forEach var="m" items="${materiales}">
+                                        <div class="col-12 col-md-6 col-xl-4">
+                                            <div class="material-card">
+                                                <div class="material-icon">
+                                                    <i class="${empty m.icono ? 'bi bi-file-earmark-text' : m.icono}"></i>
+                                                </div>
+                                                <h6 class="mb-1 text-truncate" title="${m.titulo}">${m.titulo}</h6>
+                                                <p class="text-muted small mb-3">${m.descripcion}</p>
+                                                <a class="btn btn-sm btn-accent" href="${pageContext.request.contextPath}/descargar?file=${m.archivo}">
+                                                    <i class="bi bi-download me-1"></i> Descargar
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </c:forEach>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <div class="alert alert-info mb-0">No hay materiales disponibles para esta secci&oacute;n.</div>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                </c:if>
 
-                    <a href="${pageContext.request.contextPath}/estudiante/panel.jsp" class="btn btn-secondary btn-form">Volver</a>
+                <div class="text-center mt-4">
+                    <a href="${pageContext.request.contextPath}/estudiante/panel.jsp" class="btn btn-secondary px-4">Volver al panel</a>
                 </div>
-
-</div>
-<script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-</div>
+            </main>
+        </div>
+    </div>
+    <script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            var sidebar = document.getElementById('studentSidebar');
+            var toggle = document.getElementById('sidebarToggle');
+            if (toggle && sidebar) {
+                toggle.addEventListener('click', function () {
+                    sidebar.classList.toggle('sidebar-open');
+                });
+            }
+        })();
+    </script>
 </body>
 </html>
