@@ -1,37 +1,139 @@
 <%
     String sidebarActive = (String) request.getAttribute("sidebarActive");
-    if (sidebarActive == null) {
-        sidebarActive = "";
-    }
+    if (sidebarActive == null) sidebarActive = "";
 %>
-<aside class="dashboard-sidebar" id="studentSidebar">
-    <div class="brand">
-        <p class="text-uppercase fw-bold text-white mb-1">Nivel A1</p>
-        <div class="brand-pill">
-            <span class="level">IA</span>
-            <span class="track">Academia</span>
-        </div>
-    </div>
-    <nav class="sidebar-nav nav flex-column gap-2 flex-grow-1">
-        <a class="nav-link <%= "dashboard".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/estudiante/panel.jsp">
-            <i class="bi bi-grid-1x2-fill"></i> Dashboard
-        </a>
-        <a class="nav-link <%= "cursos".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/Cursos">
-            <i class="bi bi-journal-bookmark"></i> Mis cursos
-        </a>
-        <a class="nav-link <%= "horario".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/Horario">
-            <i class="bi bi-calendar3"></i> Horario
-        </a>
-        <a class="nav-link <%= "calificaciones".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/MisNotas">
-            <i class="bi bi-bar-chart-line"></i> Calificaciones
-        </a>
-        <a class="nav-link <%= "asistencia".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/Asistencia">
-            <i class="bi bi-check2-square"></i> Asistencia
-        </a>
-    </nav>
-    <div class="sidebar-footer mt-auto">
-        <a href="${pageContext.request.contextPath}/salir">
-            <i class="bi bi-box-arrow-right"></i> Cerrar sesion
-        </a>
-    </div>
+
+<aside class="student-sidebar" id="studentSidebar" data-collapsed="false" aria-label="Menú lateral">
+  <div class="sidebar-header">
+    <button class="sidebar-toggle" id="studentSidebarToggle" type="button" aria-label="Abrir/cerrar menú" aria-expanded="true">
+      <i class="bi bi-list"></i>
+    </button>
+    <img src="${pageContext.request.contextPath}/img/logosidebar.svg" alt="Nivel IA" class="sidebar-logo">
+  </div>
+
+  <nav class="sidebar-nav nav flex-column flex-grow-1">
+    <a class="nav-link <%= "dashboard".equalsIgnoreCase(sidebarActive) ? "active" : "" %>"
+       href="${pageContext.request.contextPath}/estudiante/panel.jsp">
+      <span class="nav-indicator"></span>
+      <i class="bi bi-grid-1x2-fill"></i>
+      <span class="nav-text">Dashboard</span>
+    </a>
+    <a class="nav-link <%= "cursos".equalsIgnoreCase(sidebarActive) ? "active" : "" %>"
+       href="${pageContext.request.contextPath}/Estudiante/Cursos">
+      <span class="nav-indicator"></span>
+      <i class="bi bi-journal-bookmark"></i>
+      <span class="nav-text">Mis Cursos</span>
+    </a>
+    <a class="nav-link <%= "horario".equalsIgnoreCase(sidebarActive) ? "active" : "" %>"
+       href="${pageContext.request.contextPath}/Estudiante/Horario">
+      <span class="nav-indicator"></span>
+      <i class="bi bi-calendar3"></i>
+      <span class="nav-text">Horario</span>
+    </a>
+    <a class="nav-link <%= "calificaciones".equalsIgnoreCase(sidebarActive) ? "active" : "" %>"
+       href="${pageContext.request.contextPath}/Estudiante/MisNotas">
+      <span class="nav-indicator"></span>
+      <i class="bi bi-bar-chart-line"></i>
+      <span class="nav-text">Calificaciones</span>
+    </a>
+    <a class="nav-link <%= "asistencia".equalsIgnoreCase(sidebarActive) ? "active" : "" %>"
+       href="${pageContext.request.contextPath}/Estudiante/Asistencia">
+      <span class="nav-indicator"></span>
+      <i class="bi bi-award"></i>
+      <span class="nav-text">Asistencias</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a class="logout-link" href="${pageContext.request.contextPath}/salir">
+      <i class="bi bi-box-arrow-right"></i>
+      <span class="nav-text">Cerrar Sesion</span>
+    </a>
+  </div>
 </aside>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var sidebar = document.getElementById('studentSidebar');
+    if (!sidebar) return;
+
+    var internalToggle = document.getElementById('studentSidebarToggle');
+    var externalToggle = document.getElementById('sidebarToggle');
+    var toggles = [internalToggle, externalToggle].filter(Boolean);
+    var mq = window.matchMedia('(max-width: 991.98px)');
+
+    function setAriaExpanded(collapsed) {
+      if (internalToggle) {
+        internalToggle.setAttribute('aria-expanded', String(!collapsed));
+      }
+    }
+
+    function setMobileState(open) {
+      sidebar.classList.toggle('is-open', open);
+      document.body.classList.toggle('sidebar-open', open);
+    }
+
+    function closeMobileSidebar() {
+      if (!sidebar.classList.contains('is-open')) return;
+      setMobileState(false);
+    }
+
+    function toggleDesktopState() {
+      var isCollapsed = sidebar.getAttribute('data-collapsed') === 'true';
+      var nextState = !isCollapsed;
+      sidebar.setAttribute('data-collapsed', String(nextState));
+      setAriaExpanded(nextState);
+    }
+
+    function handleToggle(event) {
+      if (mq.matches) {
+        event.preventDefault();
+        var isOpen = sidebar.classList.contains('is-open');
+        setMobileState(!isOpen);
+      } else {
+        toggleDesktopState();
+      }
+    }
+
+    toggles.forEach(function (button) {
+      button.addEventListener('click', handleToggle);
+    });
+
+    function handleBreakpointChange(e) {
+      if (e.matches) {
+        sidebar.setAttribute('data-collapsed', 'false');
+        setAriaExpanded(false);
+      } else {
+        setMobileState(false);
+      }
+    }
+
+    if (typeof mq.addEventListener === 'function') {
+      mq.addEventListener('change', handleBreakpointChange);
+    } else if (typeof mq.addListener === 'function') {
+      mq.addListener(handleBreakpointChange);
+    }
+    handleBreakpointChange(mq);
+
+    sidebar.addEventListener('click', function (evt) {
+      if (!mq.matches) return;
+      if (evt.target.closest('.nav-link') || evt.target.closest('.logout-link')) {
+        closeMobileSidebar();
+      }
+    });
+
+    function handleOutsidePointer(evt) {
+      if (!mq.matches) return;
+      if (!sidebar.classList.contains('is-open')) return;
+      var clickedToggle = toggles.some(function (btn) {
+        return btn && btn.contains(evt.target);
+      });
+      if (clickedToggle || sidebar.contains(evt.target)) {
+        return;
+      }
+      closeMobileSidebar();
+    }
+
+    document.addEventListener('pointerdown', handleOutsidePointer);
+  });
+</script>
