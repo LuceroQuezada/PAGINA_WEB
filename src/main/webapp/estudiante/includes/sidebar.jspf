@@ -1,0 +1,37 @@
+<%
+    String sidebarActive = (String) request.getAttribute("sidebarActive");
+    if (sidebarActive == null) {
+        sidebarActive = "";
+    }
+%>
+<aside class="dashboard-sidebar" id="studentSidebar">
+    <div class="brand">
+        <p class="text-uppercase fw-bold text-white mb-1">Nivel A1</p>
+        <div class="brand-pill">
+            <span class="level">IA</span>
+            <span class="track">Academia</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav nav flex-column gap-2 flex-grow-1">
+        <a class="nav-link <%= "dashboard".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/estudiante/panel.jsp">
+            <i class="bi bi-grid-1x2-fill"></i> Dashboard
+        </a>
+        <a class="nav-link <%= "cursos".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/Cursos">
+            <i class="bi bi-journal-bookmark"></i> Mis cursos
+        </a>
+        <a class="nav-link <%= "horario".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/Horario">
+            <i class="bi bi-calendar3"></i> Horario
+        </a>
+        <a class="nav-link <%= "calificaciones".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/MisNotas">
+            <i class="bi bi-bar-chart-line"></i> Calificaciones
+        </a>
+        <a class="nav-link <%= "asistencia".equalsIgnoreCase(sidebarActive) ? "active" : "" %>" href="${pageContext.request.contextPath}/Estudiante/Asistencia">
+            <i class="bi bi-check2-square"></i> Asistencia
+        </a>
+    </nav>
+    <div class="sidebar-footer mt-auto">
+        <a href="${pageContext.request.contextPath}/salir">
+            <i class="bi bi-box-arrow-right"></i> Cerrar sesion
+        </a>
+    </div>
+</aside>

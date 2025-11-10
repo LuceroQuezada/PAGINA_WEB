@@ -1,0 +1,156 @@
+.section-card {
+    background: var(--color-surface);
+    border-radius: 24px;
+    border: 1px solid var(--color-border);
+    padding: 1.5rem;
+}
+
+.schedule-hero h1 {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+.schedule-wrapper {
+    background: var(--color-surface);
+    border-radius: 24px;
+}
+
+.schedule-grid {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 1rem;
+}
+
+.schedule-hours {
+    display: flex;
+    flex-direction: column;
+}
+
+.hour-slot {
+    height: 64px;
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    display: flex;
+    align-items: flex-start;
+}
+
+.schedule-days {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 0.75rem;
+}
+
+.schedule-day {
+    background: #FCFCFD;
+    border-radius: 18px;
+    border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+}
+
+.day-header {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: var(--color-muted);
+    border-bottom: 1px solid var(--color-border);
+    background: #F9FAFB;
+    border-radius: 18px 18px 0 0;
+}
+
+.day-header.is-today {
+    color: var(--color-accent-2);
+    background: rgba(0, 166, 62, 0.08);
+}
+
+.day-body {
+    position: relative;
+    padding: 0.5rem 0.75rem;
+}
+
+.schedule-event {
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    border-radius: 16px;
+    padding: 0.75rem;
+    color: #FFFFFF;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.schedule-event .event-code {
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.9;
+}
+
+.schedule-event .event-name {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.schedule-event .event-time {
+    font-size: 0.85rem;
+}
+
+.schedule-event--teal {
+    background: #00A63E;
+}
+
+.schedule-event--cyan {
+    background: #00C2CB;
+}
+
+.schedule-event--purple {
+    background: #2F0059;
+}
+
+.schedule-legend {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: var(--color-muted);
+}
+
+.legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.legend-dot.teal {
+    background: #00A63E;
+}
+
+.legend-dot.cyan {
+    background: #00C2CB;
+}
+
+.legend-dot.purple {
+    background: #2F0059;
+}
+
+@media (max-width: 1199.98px) {
+    .schedule-days {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 767.98px) {
+    .schedule-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .schedule-days {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
