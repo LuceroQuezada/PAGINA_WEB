@@ -129,7 +129,7 @@
 
                     <li class="nav-item mt-4">
                        <a href="${pageContext.request.contextPath}/salir" class="btn btn-danger w-100">
-                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                            <i class="fas fa-sign-out-alt"></i> Cerrar Sesiï¿½n
                         </a>
                     </li>
                 </ul>
@@ -138,7 +138,7 @@
             <div class="main-content">
                 <div class="text-center mb-4">
                     <h2 class="dashboard-title">Bienvenido al Panel del Estudiante</h2>
-                    <p class="dashboard-subtitle">¿Qué deseas hacer hoy?</p>
+                    <p class="dashboard-subtitle">ï¿½Quï¿½ deseas hacer hoy?</p>
                 </div>
 
                 <div class="row justify-content-center g-4">
@@ -166,9 +166,9 @@
                     <div class="col-md-5">
                         <div class="card text-white" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                <h5 class="card-title"><i class="fas fa-chart-line"></i> Mis Notas</h5>
-                                <p class="card-text">Revisa tus calificaciones y progreso académico.</p>
-                                <!-- Botón para ver sus propias notas -->
+                                <h5 class="card-title"><i class="fas fa-chart-line"></i> SEXO</h5>
+                                <p class="card-text">Revisa tus calificaciones y progreso acadï¿½mico.</p>
+                                <!-- Botï¿½n para ver sus propias notas -->
 <a href="${pageContext.request.contextPath}/Estudiante/MisNotas" class="btn btn-light">Ver Notas</a>
 
 
@@ -183,7 +183,7 @@
     <div class="card-body text-center">
       <h5 class="card-title"><i class="fas fa-calendar-check"></i> Mi Asistencia</h5>
       <p class="card-text">Consulta tus registros de asistencia.</p>
-      <!-- Aquí apuntamos al Servlet EstudianteMisAsistenciaServlet -->
+      <!-- Aquï¿½ apuntamos al Servlet EstudianteMisAsistenciaServlet -->
      <a href="${pageContext.request.contextPath}/Estudiante/Asistencia"
    class="btn btn-light">Ver Asistencias</a>
 
