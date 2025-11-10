@@ -85,7 +85,7 @@
         <div class="content-wrapper">
             <%@ include file="includes/topbar.jspf" %>
             <main class="dashboard-main courses-main">
-                <div class="courses-hero">
+                <div class="courses-hero mb-4">
                     <div>
                         <p class="text-muted mb-1">Descubre y gestiona tus cursos</p>
                         <h1 class="mb-0">Mis Cursos</h1>
@@ -111,24 +111,26 @@
                                             </div>
                                         </div>
                                         <div class="course-body">
+                                            <span class="course-tag">${empty curso.carrera ? "Curso" : curso.carrera}</span>
                                             <h5 class="course-title">${curso.curso}</h5>
-                                            <p class="course-meta">
-                                                <i class="bi bi-clock-history"></i>
-                                                <span>
-                                                    Secci&oacute;n ${empty curso.seccion ? 'A' : curso.seccion}
-                                                    <c:if test="${not empty curso.grupo}"> - Grupo ${curso.grupo}</c:if>
-                                                </span>
-                                            </p>
-                                            <div class="course-instructor">
-                                                <div class="instructor-avatar">
-                                                    <i class="bi bi-person"></i>
-                                                </div>
+                                            <p class="text-muted mb-2">${curso.seccion} &middot; ${curso.grupo}</p>
+                                            <div class="course-meta">
+                                                <div class="course-avatar">${fn:substring(curso.curso, 0, 1)}</div>
                                                 <div>
-                                                    <small class="text-muted">Docente</small>
-                                                    <p class="mb-0">${empty curso.profesor ? 'Por asignar' : curso.profesor}</p>
+                                                    <p class="mb-0 fw-semibold">${empty curso.profesor ? 'Por asignar' : curso.profesor}</p>
+                                                    <small class="text-muted">Instructor</small>
                                                 </div>
                                             </div>
-                                            <a class="btn btn-outline-primary w-100 mt-3" href="${pageContext.request.contextPath}/Estudiante/Cursos?idSeccion=${curso.id}">
+                                            <div class="course-footer">
+                                                <div>
+                                                    <small class="text-muted">Horario</small>
+                                                    <p class="mb-0 fw-semibold">${curso.dia} &middot; ${curso.horaInicio} - ${curso.horaFin}</p>
+                                                </div>
+                                                <div class="course-level">
+                                                    <i class="bi bi-bookmark"></i> ${empty curso.seccion ? "Seccion" : curso.seccion}
+                                                </div>
+                                            </div>
+                                            <a class="btn btn-outline-primary w-100 mt-3" href="${pageContext.request.contextPath}/Estudiante/Cursos/Detalle?idSeccion=${curso.id}">
                                                 Ver material
                                             </a>
                                         </div>
@@ -145,43 +147,6 @@
                     </c:otherwise>
                 </c:choose>
 
-                <c:if test="${not empty selectedSeccion}">
-                    <div class="section-card mt-4">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div>
-                                <p class="text-muted mb-1">Material seleccionado</p>
-                                <h5 class="mb-0">Recursos del curso</h5>
-                            </div>
-                            <a href="${pageContext.request.contextPath}/Estudiante/Cursos" class="btn btn-link text-decoration-none">
-                                Limpiar selecci&oacute;n
-                            </a>
-                        </div>
-                        <c:choose>
-                            <c:when test="${not empty materiales}">
-                                <div class="material-grid row g-3">
-                                    <c:forEach var="m" items="${materiales}">
-                                        <div class="col-12 col-md-6 col-xl-4">
-                                            <div class="material-card">
-                                                <div class="material-icon">
-                                                    <i class="${empty m.icono ? 'bi bi-file-earmark-text' : m.icono}"></i>
-                                                </div>
-                                                <h6 class="mb-1 text-truncate" title="${m.titulo}">${m.titulo}</h6>
-                                                <p class="text-muted small mb-3">${m.descripcion}</p>
-                                                <a class="btn btn-sm btn-accent" href="${pageContext.request.contextPath}/descargar?file=${m.archivo}">
-                                                    <i class="bi bi-download me-1"></i> Descargar
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </c:forEach>
-                                </div>
-                            </c:when>
-                            <c:otherwise>
-                                <div class="alert alert-info mb-0">No hay materiales disponibles para esta secci&oacute;n.</div>
-                            </c:otherwise>
-                        </c:choose>
-                    </div>
-                </c:if>
-
                 <div class="text-center mt-4">
                     <a href="${pageContext.request.contextPath}/estudiante/panel.jsp" class="btn btn-secondary px-4">Volver al panel</a>
                 </div>
@@ -189,16 +154,5 @@
         </div>
     </div>
     <script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script>
-        (function () {
-            var sidebar = document.getElementById('studentSidebar');
-            var toggle = document.getElementById('sidebarToggle');
-            if (toggle && sidebar) {
-                toggle.addEventListener('click', function () {
-                    sidebar.classList.toggle('sidebar-open');
-                });
-            }
-        })();
-    </script>
 </body>
 </html>

@@ -152,14 +152,6 @@
     <script src="${pageContext.request.contextPath}/assets/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script>
         (function () {
-            var sidebar = document.getElementById('studentSidebar');
-            var toggle = document.getElementById('sidebarToggle');
-            if (toggle && sidebar) {
-                toggle.addEventListener('click', function () {
-                    sidebar.classList.toggle('sidebar-open');
-                });
-            }
-
             var grid = document.querySelector('.schedule-grid');
             if (!grid) {
                 return;
